@@ -163,4 +163,32 @@
   font-weight: 700;
   color: #fff; /* можно убрать, если не нужен цвет */
 }
+/* ===== SUBRACE DESCRIPTION TABLES ===== */
+.race-subrace__text table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0 12px;
+}
+.race-subrace__text td,
+.race-subrace__text th {
+  border: 1px solid rgba(0,0,0,.18);
+  padding: 6px 8px;
+  vertical-align: top;
+}
+.race-subrace__text .table_header td,
+.race-subrace__text thead td,
+.race-subrace__text th {
+  font-weight: 600;
+  background: rgba(0,0,0,.06);
+}
+.race-subrace__text a { text-decoration: underline; }
+
+@media (prefers-color-scheme: dark) {
+  .race-subrace__text td,
+  .race-subrace__text th { border-color: rgba(255,255,255,.16); }
+  .race-subrace__text .table_header td,
+  .race-subrace__text thead td,
+  .race-subrace__text th { background: rgba(255,255,255,.06); }
+}
+
 

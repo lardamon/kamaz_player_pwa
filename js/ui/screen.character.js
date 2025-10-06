@@ -352,13 +352,16 @@ title.style.alignSelf = 'flex-start';
   const icons = el('div', { class:'hs-iconbar' });
   
   function icBtn(iconFile, titleText, onClick){
-    const b = el('button', { class:'hs-ic', type:'button', title: titleText });
-    const img = el('div', { class:'hs-ic__img' });
-    b.style.setProperty('--icon-url', `url("../assets/icons/ui/${iconFile}")`);
-    b.append(img);
-    b.addEventListener('click', onClick);
-    return b;
-  }
+  const attrs = { class:'hs-ic', type:'button' };
+  if (titleText) attrs.title = titleText;            // ← не ставим title, если пусто
+  const b = el('button', attrs);
+  const img = el('div', { class:'hs-ic__img' });
+  b.style.setProperty('--icon-url', `url("../assets/icons/ui/${iconFile}")`);
+  b.append(img);
+  b.addEventListener('click', onClick);
+  return b;
+}
+
 // ——— Чипсы классов и действия ———
 function setPrimaryClass(ch, idx){
   const list = load();
@@ -630,12 +633,22 @@ icons.append(
 );
 
 
+
 // остальное — как было
 icons.append(
   icBtn('edit.svg', 'Классы и уровни', () => { openMulticlass(ch.id); }),
   icBtn('table.svg', 'Таблица', () => { if (window.TableModal) TableModal.open({ classId: ch.classId, level: ch.level }); }),
-  icBtn('book.svg', 'Каталог заклинаний', ()=> Router.navTo(`/spells?char=${encodeURIComponent(ch.id)}`))
+  icBtn('book.svg', 'Каталог заклинаний', ()=> Router.navTo(`/spells?char=${encodeURIComponent(ch.id)}`)),
 );
+const btnSubrace = icBtn('half-dead.svg', '', () => {   // ← пустой title, чтобы не было подсказки
+  if (window.SubraceModal) SubraceModal.open(ch.id);
+  else console.warn('SubraceModal не загружен');
+});
+btnSubrace.style.transform = 'translateY(6px)';         // ← чуть ниже иконку
+icons.append(btnSubrace);
+
+
+
 
 
   // Насколько поднять вверх весь блок "Имя + Мета"
@@ -1162,6 +1175,29 @@ frame.style.setProperty('--race-font-size', '15px'); // размер текст�
   // === /РУЧКИ ===
 
   const title = el('h2', {}, 'Способности расы');
+// === Подраса: готовим ЭЛЕМЕНТ в стиле трейта (race-trait), добавим позже в список ===
+let subraceItem = null;
+(function(){
+  const name = (ch && ch.subrace) ? String(ch.subrace) : '';
+  if (!name) return;
+  const r = ch.race || '';
+  let html = (window.SUBRACE_DESC && window.SUBRACE_DESC[r] && window.SUBRACE_DESC[r][name]) || '';
+  if (!html) return;
+
+  // та же предобработка, что у расовых трейтов:
+  html = String(html);
+  if (/<tbody[\s>]/i.test(html) && !/<table[\s>]/i.test(html)) html = `<table>${html}</table>`;
+  if (!/<table[\s>]/i.test(html)) html = html.replace(/\n/g, '<br>');
+
+  // делаем “точь-в-точь” как у пункта расы: <div class="race-trait"><strong>..</strong><span>..</span>
+  subraceItem = el('div', { class:'race-trait' }, [
+    el('strong', {}, `Подраса: ${name}`),
+    el('span', { html })
+  ]);
+})();
+
+
+
 
   // Пустое состояние
   if (!data || !Array.isArray(data.traits) || data.traits.length === 0){
@@ -1191,6 +1227,7 @@ frame.style.setProperty('--race-font-size', '15px'); // размер текст�
     item.append(el('span', { html }));
     list.appendChild(item);
   });
+if (subraceItem) list.appendChild(subraceItem);
 
   // Таблицы: переносим .table_header в <thead>, вешаем класс для стилей
   Array.from(list.querySelectorAll('table')).forEach(tbl => {
@@ -1211,9 +1248,11 @@ frame.style.setProperty('--race-font-size', '15px'); // размер текст�
   });
 
   scroller.append(title, list);
-  body.append(scroller);
-  frame.append(body, frameImg);
-  return frame;
+body.append(scroller);
+frame.append(body, frameImg);
+return frame;
+
+
 }
 
 
