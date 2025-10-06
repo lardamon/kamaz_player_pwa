@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Player Kit — D&D 5e</title>
+
+  <!-- PWA -->
+  <meta name="theme-color" content="#0e1a2b" />
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles/base.css?v=4" />
+  <link rel="stylesheet" href="styles/ui.css?v=4" />
+  <link rel="stylesheet" href="styles/layout.css?v=5" />
+  <link rel="stylesheet" href="styles/theme-hearthstone.css?v=11" />
+</head>
+<body>
+  <div id="app" class="app-root" aria-live="polite"></div>
+
+  <!-- Router -->
+  <script defer src="js/router.js?v=3"></script>
+
+  <!-- UI Screens -->
+  <script defer src="js/ui/screen.characters.js?v=4"></script>
+  <script defer src="js/ui/screen.character.js?v=7"></script>
+
+  <!-- Class tables data + features + table modal -->
+  <script defer src="data/class-tables.seed.js?v=1"></script>
+  <script defer src="data/class-features.seed.js?v=1"></script>
+
+  <script defer src="js/ui/modal.table.js?v=1"></script>
+  <script defer src="js/ui/modal.multiclass.js?v=1"></script>
+
+  <!-- Spells -->
+  <script defer src="data/spells.seed.js?v=2"></script>
+  <script defer src="js/ui/modal.spell.js?v=2"></script>
+  <script defer src="js/ui/screen.spells.js?v=2"></script>
+<script src="data/race-traits.seed.js"></script>
+
+  <!-- App bootstrap -->
+  <script defer src="js/app.js?v=3"></script>
+
+
+</body>
+</html>

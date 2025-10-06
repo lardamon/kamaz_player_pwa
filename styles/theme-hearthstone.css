@@ -1,0 +1,1152 @@
+/* === Hearthstone UI вЂ” Р±Р°Р·РѕРІС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ === */
+:root{
+  --hs-gap: 8px;
+  --hs-radius: 16px;
+}
+
+/* === Р Р°РјРєР° (РІРЅРµС€РЅСЏСЏ) + РІРЅСѓС‚СЂРµРЅРЅРёР№ РїРµСЂРіР°РјРµРЅС‚ === */
+.hs-frame{
+  position: relative;
+  width: 100%;
+  margin: 12px 0;
+  overflow: hidden;
+
+  /* Р РЈР§РљР: РѕРєРЅРѕ РІРЅСѓС‚СЂРё СЂР°РјРєРё (px) */
+  --inset-top:    64px;
+  --inset-right:  18px;
+  --inset-bottom: 40px;
+  --inset-left:   18px;
+
+  /* Р¤РёРєСЃРёСЂСѓРµРј РІС‹СЃРѕС‚Сѓ СЂР°РјРєРё РѕС‚ С€РёСЂРёРЅС‹ вЂ” РЅРµ Р·Р°РІРёСЃРёС‚ РѕС‚ РєРѕРЅС‚РµРЅС‚Р° */
+  aspect-ratio: var(--frame-aspect, 720/1100); /* РјРѕР¶РµС€СЊ РїРѕРґСЃС‚СЂРѕРёС‚СЊ С‡РёСЃР»Рѕ */
+}
+
+
+
+.hs-frame__img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  z-index: 2;
+}
+
+.hs-frame__body{
+  position: relative;
+  box-sizing: border-box;
+  padding: var(--pad-top) var(--pad-right) var(--pad-bottom) var(--pad-left);
+
+  /* РїРµСЂРіР°РјРµРЅС‚ СЃС‚СЂРѕРіРѕ РІРЅСѓС‚СЂРё РѕРєРЅР° */
+  background-image: url("../assets/ui/parchment.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-clip: content-box;
+  background-origin: content-box;
+
+  border-radius: var(--hs-radius);
+
+  /* Р’РђР–РќРћ: РѕРєРЅРѕ СЂР°РјРєРё РёРјРµРµС‚ С„РёРєСЃРёСЂРѕРІР°РЅРЅСѓСЋ РІС‹СЃРѕС‚Сѓ,
+     РґР°Р¶Рµ РµСЃР»Рё РІРЅСѓС‚СЂРё РјР°Р»Рѕ РєРѕРЅС‚РµРЅС‚Р° */
+  height: var(--frame-max-h);
+  min-height: var(--frame-min-h, 40vh);
+
+  /* РЅРёС‡РµРіРѕ Р·Р° РѕРєРЅРѕ РЅРµ РІС‹Р»РµР·Р°РµС‚ */
+  overflow: hidden;
+
+  z-index: 1;
+}
+
+/* Р РµР°Р»СЊРЅС‹Р№ СЃРєСЂРѕР»Р»РµСЂ Р’РќРЈРўР Р РѕРєРЅР° */
+.hs-frame__scroll{
+  /* РІС‹СЃРѕС‚Р° РѕРєРЅР° = frame-max-h РјРёРЅСѓСЃ РІРµСЂС…/РЅРёР· РїР°РґРґРёРЅРіРѕРІ СЂР°РјРєРё */
+  max-height: calc(var(--frame-max-h) - var(--pad-top) - var(--pad-bottom));
+  overflow: auto;
+
+  /* С‡С‚РѕР±С‹ С‚РµРєСЃС‚ Рё СЃРєСЂРѕР»Р»Р±Р°СЂ РЅРµ РїСЂРёР»РёРїР°Р»Рё Рє Р·РѕР»РѕС‚Сѓ */
+  padding-bottom: 2px;
+}
+
+
+
+
+
+/* Р—Р°РіРѕР»РѕРІРєРё/РїСѓСЃС‚С‹Рµ СЃРѕСЃС‚РѕСЏРЅРёСЏ РІРЅСѓС‚СЂРё */
+/* Р—Р°РіРѕР»РѕРІРѕРє СЃРµРєС†РёРё РІРЅСѓС‚СЂРё СЂР°РјРєРё */
+.hs-frame__body > h2{
+  margin: 0 0 8px 0;
+  text-align: center;
+
+  font-family: "Oranienbaum","Ruslan Display", serif;
+  font-weight: 400;
+  font-size: clamp(18px, 4.6vw, 22px);
+  letter-spacing: .2px;
+}
+
+.hs-frame__body .empty__text{ opacity: .9; }
+
+/* РЎРµС‚РєР° РёР· С„РёРєСЃРёСЂРѕРІР°РЅРЅС‹С… РїР»РёС‚РѕРє РѕС‚ С†РµРЅС‚СЂР°.
+   РЁРёСЂРёРЅР° РєРѕР»РѕРЅРєРё Р±РµСЂС‘С‚СЃСЏ РёР· --spell-w, РєРѕР»РёС‡РµСЃС‚РІРѕ вЂ” РёР· --spell-cols */
+.hs-spells-grid{
+  display: grid;
+  grid-template-columns: repeat(var(--spell-cols, 2), var(--spell-w, 160px));
+  gap: var(--spell-gap, 10px);
+  justify-content: center;   /* С†РµРЅС‚СЂРёСЂСѓРµРј СЃРµС‚РєСѓ */
+  align-content: start;
+}
+
+/* === РЈРњР•РќРРЇ: СЃРµС‚РєР° Рё РїР»РёС‚РєРё === */
+.hs-feat-grid{
+  display: grid;
+  grid-template-columns: repeat(var(--feat-cols, 2), var(--feat-w, 125px));
+  gap: var(--feat-gap, 10px);
+  justify-content: center;
+  align-content: start;
+}
+
+.hs-feat-btn{
+  width: var(--feat-w, 125px) !important;
+  height: var(--feat-h, 65px) !important;
+.hs-feat {
+  box-sizing: border-box;
+  overflow: hidden;
+  max-width: var(--feat-w, 125px);
+  background-size: 100% 100%;   /* ← растягивает фон рамки под размер кнопки */
+}
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 14px;
+  border: 0;
+  border-radius: 16px;
+
+  background-color: transparent !important;
+  background-image: var(--feat-btn-bg, none) !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 100% 100% !important;
+
+  color: #fff;
+  text-shadow: 0 2px 2px rgba(0,0,0,.7);
+  transition: transform .06s ease, filter .06s ease;
+}
+.hs-feat-btn:active{ transform: translateY(1px) scale(.99); filter: brightness(.95); }
+.hs-feat-btn:focus-visible{ outline: 2px solid rgba(255,255,255,.6); outline-offset: 2px; }
+
+/* РўРµРєСЃС‚ РЅР° РєРЅРѕРїРєРµ СѓРјРµРЅРёСЏ: РґРѕ 3 СЃС‚СЂРѕРє, Р±РµР· РїРµСЂРµРЅРѕСЃРѕРІ РїРѕ СЃР»РѕРіР°Рј */
+.hs-feat-btn__label{
+  max-width: 100%;
+  padding: 0 6px;
+  text-align: center;
+  line-height: 1.1;
+
+  font-size: var(--feat-font-size, 15px);
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+
+/* РљРЅРѕРїРєР°-В«РїР»РёС‚РєР°В» Р·Р°РєР»РёРЅР°РЅРёСЏ РїРѕРґ PNG-СЃРєРёРЅ РєР»Р°СЃСЃР°, С„РёРєСЃРёСЂРѕРІР°РЅРЅРѕРіРѕ СЂР°Р·РјРµСЂР° */
+/* РљРЅРѕРїРєР°-РїР»РёС‚РєР°: Inter Р¶РёСЂРЅС‹Р№ + PNG-СЃРєРёРЅ РєР»Р°СЃСЃР° */
+.hs-spell-btn{
+  width: var(--spell-w, 160px) !important;
+  height: var(--spell-h, 65px) !important;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 14px;
+  border: 0;
+  border-radius: 16px;
+
+  /* РЁР РР¤Рў Р”Р›РЇ РљРќРћРџРћРљ (СЂСѓС‡РєР° СЂР°Р·РјРµСЂР° РЅРёР¶Рµ РІ __label) */
+    font-family: "Rubik", "Inter Var", Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  font-weight: 600; /* РїРѕРґ SemiBold */
+  color: #fff;
+  text-shadow: 0 2px 2px rgba(0,0,0,.7);
+
+  background-color: transparent !important;
+  background-image: var(--spell-btn-bg, none) !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 100% 100% !important;
+
+  transition: transform .06s ease, filter .06s ease;
+}
+.hs-spell-btn:active{ transform: translateY(1px) scale(.99); filter: brightness(.95); }
+.hs-spell-btn:focus-visible{ outline: 2px solid rgba(255,255,255,.6); outline-offset: 2px; }
+
+
+/* РџРѕРґРїРёСЃСЊ РЅР° РєРЅРѕРїРєРµ: РґРѕ 3 СЃС‚СЂРѕРє, СЂР°Р·РјРµСЂ вЂ” СЂСѓС‡РєРѕР№ */
+.hs-spell-btn__label{
+  max-width: 100%;
+  padding: 0 6px;
+  text-align: center;
+  line-height: 1.1;
+
+  font-size: var(--spell-font-size, 14px);  /* в†ђ Р РЈР§РљРђ СЂР°Р·РјРµСЂР° С‚РµРєСЃС‚Р° */
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;   /* РјР°РєСЃРёРјСѓРј 3 СЃС‚СЂРѕРєРё */
+  overflow: hidden;
+
+  /* РїРµСЂРµРЅРѕСЃРёРј С‚РѕР»СЊРєРѕ РїРѕ СЃР»РѕРІР°Рј */
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+
+
+
+
+/* === Р¤РѕРЅ РєРЅРѕРїРѕРє РїРѕ РєР»Р°СЃСЃСѓ РїРµСЂСЃРѕРЅР°Р¶Р° === */
+[data-ch-class="barbarian"] .hs-spell-btn { --spell-btn-bg: url("../assets/ui/class_barbarian.png"); }
+[data-ch-class="bard"]      .hs-spell-btn { --spell-btn-bg: url("../assets/ui/class_bard.png"); }
+[data-ch-class="cleric"]    .hs-spell-btn { --spell-btn-bg: url("../assets/ui/class_cleric.png"); }
+[data-ch-class="druid"]     .hs-spell-btn { --spell-btn-bg: url("../assets/ui/class_druid.png"); }
+[data-ch-class="fighter"]   .hs-spell-btn { --spell-btn-bg: url("../assets/ui/class_warrior.png"); }  /* Сѓ С‚РµР±СЏ С„Р°Р№Р» class_warrior.png */
+[data-ch-class="monk"]      .hs-spell-btn { --spell-btn-bg: url("../assets/ui/class_monk.png"); }
+[data-ch-class="paladin"]   .hs-spell-btn { --spell-btn-bg: url("../assets/ui/class_paladin.png"); }
+[data-ch-class="ranger"]    .hs-spell-btn { --spell-btn-bg: url("../assets/ui/class_hunter.png"); }   /* Сѓ С‚РµР±СЏ С„Р°Р№Р» class_hunter.png */
+[data-ch-class="rogue"]     .hs-spell-btn { --spell-btn-bg: url("../assets/ui/class_rogue.png"); }
+[data-ch-class="sorcerer"]  .hs-spell-btn { --spell-btn-bg: url("../assets/ui/class_sorcerer.png"); }
+[data-ch-class="warlock"]   .hs-spell-btn { --spell-btn-bg: url("../assets/ui/class_warlock.png"); }
+[data-ch-class="wizard"]    .hs-spell-btn { --spell-btn-bg: url("../assets/ui/class_wizard.png"); }
+[data-ch-class="artificer"] .hs-spell-btn { --spell-btn-bg: url("../assets/ui/class_artificer.png"); }
+/* === Р¤РѕРЅС‹ РєРЅРѕРїРѕРє СѓРјРµРЅРёР№ РїРѕ РєР»Р°СЃСЃСѓ === */
+[data-ch-class="barbarian"] .hs-feat-btn { --feat-btn-bg: url("../assets/ui/class_barbarian.png"); }
+[data-ch-class="bard"]      .hs-feat-btn { --feat-btn-bg: url("../assets/ui/class_bard.png"); }
+[data-ch-class="cleric"]    .hs-feat-btn { --feat-btn-bg: url("../assets/ui/class_cleric.png"); }
+[data-ch-class="druid"]     .hs-feat-btn { --feat-btn-bg: url("../assets/ui/class_druid.png"); }
+[data-ch-class="fighter"]   .hs-feat-btn { --feat-btn-bg: url("../assets/ui/class_warrior.png"); } /* Сѓ С‚РµР±СЏ С„Р°Р№Р» class_warrior.png */
+[data-ch-class="monk"]      .hs-feat-btn { --feat-btn-bg: url("../assets/ui/class_monk.png"); }
+[data-ch-class="paladin"]   .hs-feat-btn { --feat-btn-bg: url("../assets/ui/class_paladin.png"); }
+[data-ch-class="ranger"]    .hs-feat-btn { --feat-btn-bg: url("../assets/ui/class_hunter.png"); }  /* Сѓ С‚РµР±СЏ С„Р°Р№Р» class_hunter.png */
+[data-ch-class="rogue"]     .hs-feat-btn { --feat-btn-bg: url("../assets/ui/class_rogue.png"); }
+[data-ch-class="sorcerer"]  .hs-feat-btn { --feat-btn-bg: url("../assets/ui/class_sorcerer.png"); }
+[data-ch-class="warlock"]   .hs-feat-btn { --feat-btn-bg: url("../assets/ui/class_warlock.png"); }
+[data-ch-class="wizard"]    .hs-feat-btn { --feat-btn-bg: url("../assets/ui/class_wizard.png"); }
+[data-ch-class="artificer"] .hs-feat-btn { --feat-btn-bg: url("../assets/ui/class_artificer.png"); }
+
+/* HS: С€СЂРёС„С‚ Рё СЂР°Р·РјРµСЂ РґР»СЏ С‚РµРєСЃС‚РѕРІ РЅР° РєРЅРѕРїРєР°С… Р·Р°РєР»РёРЅР°РЅРёР№ */
+.hs-frame .hs-spell-btn__label,
+.hs-frame .hs-feat-btn__label{
+  font-family: "Rubik","Inter Var",Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial !important;
+  font-weight: 600 !important;
+  font-size: var(--spell-font-size, 15px) !important; /* РґР»СЏ СѓРјРµРЅРёР№ РјРѕР¶РЅРѕ РЅРµ С‚СЂРѕРіР°С‚СЊ, Сѓ РЅРёС… СЃРІРѕСЏ --feat-font-size */
+  line-height: 1.12;
+  letter-spacing: .2px;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+.hs-frame .hs-feat-btn__label{ font-size: var(--feat-font-size, 11px) !important; }
+/* === Р РђРЎРђ: С‚РёРїРѕРіСЂР°С„РёРєР° Рё С‚Р°Р±Р»РёС†С‹ === */
+/* === Р РђРЎРђ: Р±Р°Р·РѕРІР°СЏ С‚РёРїРѕРіСЂР°С„РёРєР° === */
+.hs-race-typo{
+  /* Р РЈР§РљРђ СЂР°Р·РјРµСЂР° С‚РµРєСЃС‚Р° */
+  font-size: var(--race-font-size, 15px);
+  line-height: 1.5;
+
+  /* С‡РёС‚Р°РµРјС‹Р№ С†РІРµС‚ РЅР° РїРµСЂРіР°РјРµРЅС‚Рµ */
+  color: #2f2114 !important;
+
+  /* С€СЂРёС„С‚ РґР»СЏ РґР»РёРЅРЅС‹С… РѕРїРёСЃР°РЅРёР№ вЂ” Inter/Rubik */
+  font-family: "Inter Var", Inter, "Rubik", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* РіР°СЂР°РЅС‚РёСЂСѓРµРј С†РІРµС‚ Рё Сѓ РІР»РѕР¶РµРЅРЅС‹С… СЌР»РµРјРµРЅС‚РѕРІ */
+.hs-race-typo p,
+.hs-race-typo span,
+.hs-race-typo li,
+.hs-race-typo td,
+.hs-race-typo th { color: #2f2114 !important; }
+
+/* Р·Р°РіРѕР»РѕРІРѕРє С‚СЂРµР№С‚Р° (РјС‹ РІС‹РІРѕРґРёРј С‡РµСЂРµР· <strong>) */
+.hs-race-typo .race-trait{ margin: 10px 0 14px; }
+.hs-race-typo .race-trait strong{
+  display:block;
+  margin: 0 0 6px 0;
+  font-family: "Oranienbaum","Ruslan Display",serif;
+  font-weight: 700;
+  color: #5a3b1e;
+  letter-spacing: .2px;
+}
+
+/* Р°Р±Р·Р°С†С‹ Рё РїРµСЂРµРЅРѕСЃС‹ */
+.hs-race-typo p{ margin: 0 0 10px; }
+.hs-race-typo br + br{ line-height: .8; }
+
+/* СЃРїРёСЃРєРё вЂ” Р°РєРєСѓСЂР°С‚РЅС‹Рµ РјР°СЂРєРµСЂС‹ */
+.hs-race-typo ul{ list-style: none; margin: 8px 0 12px; padding: 0; }
+.hs-race-typo ul li{
+  position: relative;
+  margin: 6px 0;
+  padding-left: 14px;
+}
+.hs-race-typo ul li::before{
+  content: "вЂў";
+  position: absolute; left: 0; top: 0;
+  color: #7a562f; font-weight: 700; line-height: 1.2;
+}
+
+/* С‚Р°Р±Р»РёС†С‹ */
+.hs-race-typo .race-table{
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0 12px;
+  font-size: calc(var(--race-font-size, 15px) - 1px);
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(255,255,255,.18);
+}
+.hs-race-typo .race-table thead th{
+  background: rgba(0,0,0,.08);
+  font-weight: 700;
+}
+.hs-race-typo .race-table td,
+.hs-race-typo .race-table th{
+  border: 1px solid rgba(0,0,0,.12);
+  padding: 6px 8px;
+  text-align: left;
+}
+/* === HS HEADER (Р±СѓРјР°РіР° + РѕСЂРЅР°РјРµРЅС‚ СЃРїСЂР°РІР°) ======================= */
+/* === HS HEADER (Р±СѓРјР°РіР° + РѕСЂРЅР°РјРµРЅС‚ СЃРїСЂР°РІР°) ======================= */
+.hs-header{
+  position: relative;
+  height: var(--hdr-h, 160px);
+  margin: 12px 0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* РїРѕРґР»РѕР¶РєСѓ РІС‹РєР»СЋС‡Р°РµРј РїРѕР»РЅРѕСЃС‚СЊСЋ */
+.hs-header__bg{
+  display: none !important;
+}
+
+/* Р±СѓРјР°РіР° СЃРІРµСЂС…Сѓ вЂ” 1) С‚РІРѕР№ header-paper.png, 2) С„РѕР»Р±СЌРє: parchment.png */
+.hs-header__paper{
+  position: absolute; inset: 0;
+  background-image:
+    var(--paper-img, url("../assets/ui/header-paper-card.png")),
+    url("../assets/ui/parchment.png");
+  background-repeat: no-repeat, no-repeat;
+  background-position: center, center;
+  background-size: contain, cover;
+  transform: translate(var(--paper-offset-x,0), var(--paper-offset-y,0)) scale(var(--paper-scale,1));
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* РѕСЂРЅР°РјРµРЅС‚ СЃРїСЂР°РІР°: РєР°Рє В«СЂРёСЃСѓРЅРѕРєВ» РЅР° Р±СѓРјР°РіРµ */
+.hs-header__ornament{
+  position: absolute;
+  right: var(--ornament-offset-x, 12px);
+  top: 48%;
+  transform: translateY(-50%);
+  width: var(--ornament-size, 220px);
+  height: var(--ornament-size, 220px);
+  background-image: var(--ornament-img, none);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: var(--ornament-opacity, .22);
+  filter: grayscale(100%);
+  mix-blend-mode: multiply;
+  z-index: 3;
+  pointer-events: none;
+}
+/* Мягкий цветовой налёт для орнамента по --accent */
+.hs-header__ornament::after{
+  content:"";
+  position:absolute; inset:0;
+  background: var(--accent, #c9a227);
+  opacity: .24;                    /* лёгкая, не ядовитая тонировка */
+  mix-blend-mode: multiply;
+  -webkit-mask-image: var(--ornament-img);
+          mask-image: var(--ornament-img);
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
+  -webkit-mask-size: contain;
+          mask-size: contain;
+  pointer-events:none;
+}
+
+/* РєРѕРЅС‚РµРЅС‚ РїРѕРІРµСЂС… Р±СѓРјР°РіРё */
+.hs-header__row{
+  position: relative;
+  z-index: 4;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr; /* С‚РѕР»СЊРєРѕ Р·Р°РіРѕР»РѕРІРѕРє, Р±РµР· Р»РµРІРѕР№ РєРѕР»РѕРЅРєРё */
+  align-items: start;
+  padding: 8px 12px 12px;     /* СЃРІРµСЂС…Сѓ С‡СѓС‚СЊ РІРѕР·РґСѓС…Р° */
+}
+
+/* РРєРѕРЅРєРё: СЂСЏРґ Сѓ РЅРёР¶РЅРµРіРѕ РєСЂР°СЏ, СЃР»РµРІР° */
+.hs-iconbar{
+  position: absolute; left: 12px; bottom: 8px;
+  display: flex; gap: 10px; align-items: center;
+}
+
+/* РџСЂРѕР·СЂР°С‡РЅС‹Рµ РєРІР°РґСЂР°С‚РЅС‹Рµ РєРЅРѕРїРєРё-РёРєРѕРЅРєРё */
+.hs-ic{
+  appearance: none; -webkit-appearance: none;
+  width: var(--iconbtn-size, 56px);
+  height: var(--iconbtn-size, 56px);
+  border-radius: 12px;
+  background: transparent;
+  border: none;                 /* ← убрать рамку */
+  box-shadow: none;             /* ← убрать внутренний «ободок» */
+  display: grid; place-items: center;
+  transition: transform .06s ease, filter .06s ease, border-color .06s ease;
+}
+
+.hs-ic:hover{ filter: brightness(1.06); }
+.hs-ic:active{ transform: translateY(1px); }
+.hs-ic:focus-visible{ outline: 2px solid rgba(255,255,255,.5); outline-offset: 2px; }
+
+/* РРєРѕРЅРєР° С‡РµСЂРµР· mask; С†РІРµС‚ Р±РµСЂС‘Рј РёР· --accent (РєР°Рє РѕСЂРЅР°РјРµРЅС‚) */
+.hs-ic__img{
+  width: 68%; height: 68%;
+  background-color: var(--accent, #7a562f);
+  -webkit-mask-image: var(--icon-url);
+          mask-image: var(--icon-url);
+  -webkit-mask-repeat: no-repeat;  mask-repeat: no-repeat;
+  -webkit-mask-position: center;   mask-position: center;
+  -webkit-mask-size: contain;      mask-size: contain;
+}
+
+/* Р—Р°РіРѕР»РѕРІРѕРє: РёРјСЏ СЃРІРµСЂС…Сѓ, meta РЅРёР¶Рµ */
+.hs-header__title .title-top{ margin: 0; }
+.hs-header__title .meta-under{
+  color: #4a3523;
+  font-size: var(--subtitle-size, 14px);
+  letter-spacing: .2px;
+  margin-top: 2px;
+}
+
+
+
+/* РљРІР°РґСЂР°С‚РЅС‹Рµ РїСЂРѕР·СЂР°С‡РЅС‹Рµ РєРЅРѕРїРєРё-РёРєРѕРЅРєРё */
+.hs-iconbtn{
+  width: var(--iconbtn-size, 42px);
+  height: var(--iconbtn-size, 42px);
+  border: 1px solid rgba(0,0,0,.22);
+  border-radius: 10px;
+  background: transparent;
+  display: grid;
+  place-items: center;
+  color: var(--accent, #7a562f); /* С†РІРµС‚ = Р°РєС†РµРЅС‚ РєР»Р°СЃСЃР° */
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.12);
+  transition: transform .05s ease, filter .05s ease, border-color .05s ease;
+}
+.hs-iconbtn:hover{ filter: brightness(1.05); }
+.hs-iconbtn:active{ transform: translateY(1px); }
+.hs-iconbtn:focus-visible{ outline: 2px solid rgba(255,255,255,.5); outline-offset: 2px; }
+
+.hs-iconbtn__glyph{
+  font-size: var(--icon-font, 20px);
+  line-height: 1;
+}
+
+/* Р—Р°РіРѕР»РѕРІРѕРє: РёРјСЏ + РјРµС‚Р° РІ РѕРґРЅСѓ СЃС‚СЂРѕРєСѓ */
+.hs-header__title .title-line{
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap; /* РµСЃР»Рё СѓР·РєРѕ вЂ” РїРµСЂРµРЅРѕСЃРёРј РјРµС‚Сѓ */
+}
+
+.hs-header__title .meta-inline{
+  color: #4a3523;
+  font-size: var(--subtitle-size, 14px);
+  letter-spacing: .2px;
+}
+
+
+.hs-header__left{
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Р·Р°РіРѕР»РѕРІРєРё РЅР° Р±СѓРјР°РіРµ */
+.hs-header__title h1{
+  margin: 0;
+  font-family: "Oranienbaum","Ruslan Display",serif;
+  font-weight: 400;
+  font-size: var(--title-size, 22px);
+  color: #2f2114;
+  letter-spacing: .3px;
+  text-shadow: 0 1px 0 rgba(255,255,255,.25);
+}
+.hs-header__title .meta{
+  color: #4a3523;
+  font-size: var(--subtitle-size, 14px);
+  margin-top: 2px;
+}
+.hs-header__title .meta .dot{
+  display:inline-block; width:5px; height:5px; border-radius:50%;
+  background:#7a562f; transform: translateY(-1px);
+}
+/* === Hearthstone wood background === */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background: url("../assets/ui/wood-hs.png") repeat;
+  background-size: 400px auto;   /* регулируй размер досок */
+  opacity: 0.30;                 /* яркость досок */
+}
+/* === Character Select: parchment cards === */
+.parchment-card {
+  position: relative;
+  background: url("../assets/ui/parchment.webp") center/cover no-repeat;
+  border-radius: 14px;
+  padding: 14px 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,.5);
+  cursor: pointer;
+}
+
+/* орнамент класса (будет поверх бумаги, но под текстом) */
+.parchment-card .char-card__ornament {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 75%;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+/* содержимое поверх */
+.parchment-card .char-card__content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+/* пример: орнаменты под разные классы */
+.parchment-card[data-class="barbarian"] .char-card__ornament {
+  background-image: url("../assets/ui/header-ornaments/ornament-barbarian.png");
+}
+.parchment-card[data-class="bard"] .char-card__ornament {
+  background-image: url("../assets/ui/header-ornaments/ornament-bard.png");
+}
+/* ...и так далее под каждый класс */
+/* === OVERRIDE: Character Select Cards на пергаменте === */
+.char-card.parchment-card {
+  background: url("../assets/ui/header-paper-card.png") center/cover no-repeat !important;
+  border: none !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,.5) !important;
+}
+
+.char-card.parchment-card .char-card__title,
+.char-card.parchment-card .char-card__meta {
+  color: #2a1a0f; /* тёмный текст на светлом фоне */
+}
+/* === Убираем старую овальную подложку у карточек персонажей === */
+.char-card.parchment-card::before,
+.char-card.parchment-card::after {
+  content: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+/* === Character Select — пергамент и орнамент как в hs-header === */
+
+/* вырубаем старые оверлеи панели только для пергаментных карт */
+.char-card.panel.parchment-card::before,
+.char-card.panel.parchment-card::after{
+  content: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  display: none !important;
+}
+
+/* слой бумаги (точно как .hs-header__paper) */
+.char-card.parchment-card::after{
+  content:"";
+  position:absolute; inset:0;
+  z-index: 1;                 /* под орнаментом, над фоном body */
+  pointer-events:none;
+
+  background-image:
+    var(--card-paper, url("../assets/ui/parchment.png")),
+    url("../assets/ui/parchment.png");
+  background-repeat: no-repeat, no-repeat;
+  background-position: center, center;
+  background-size: contain, cover;
+  transform: translate(var(--paper-offset-x,0), var(--paper-offset-y,0)) scale(var(--paper-scale,1));
+}
+
+/* орнамент (как .hs-header__ornament) */
+.char-card.parchment-card .char-card__ornament{
+  position:absolute; inset:0;
+  z-index: 2;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size: 78%;
+  opacity: var(--ornament-opacity, .22);
+  filter: grayscale(100%);
+  mix-blend-mode: multiply;
+  pointer-events:none;
+}
+
+/* контент поверх бумаги и орнамента */
+.char-card.parchment-card .char-card__content{
+  position: relative;
+  z-index: 3;
+  text-align: center;
+}
+
+/* типографика как в шапке */
+.char-card.parchment-card .char-card__title{
+  margin:0 0 4px;
+  font-family: "Oranienbaum","Ruslan Display",serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: #2f2114;
+  letter-spacing: .3px;
+  text-shadow: 0 1px 0 rgba(255,255,255,.25);
+}
+.char-card.parchment-card .char-card__meta{
+  font-size: 13px;
+  color: #4a3523;
+}
+/* кнопки-умений рисуем PNG фоном (класс/подкласс) */
+.hs-feat-grid .hs-feat-btn{
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+/* === Умения: заголовки внутри рамки Hearthstone === */
+.hs-frame__scroll .meta.meta--feat{
+  margin: 8px 0;
+  text-align: center;
+  font-family: "Oranienbaum","Ruslan Display", serif;
+  font-weight: 500;
+  font-size: clamp(14px, 3.8vw, 16px);
+  color: #2f2114;
+  letter-spacing: .3px;
+  text-shadow:
+    0 1px 0 rgba(255,240,210,.6),
+    0 1px 1px rgba(0,0,0,.18);
+}
+
+.hs-frame__scroll .meta.meta--feat-sub{
+  margin: 4px 0 6px;
+  text-align: center;
+  font-family: "Oranienbaum","Ruslan Display", serif;
+  font-weight: 400;
+  font-size: clamp(13px, 3.4vw, 15px);
+  color: #5a3c23;
+  opacity: .95;
+  letter-spacing: .25px;
+  text-shadow:
+    0 1px 0 rgba(255,240,210,.55),
+    0 1px 1px rgba(0,0,0,.15);
+}
+/* УМЕНИЯ — подписи как в разделе РАС: центр и «бумажная» типографика */
+.meta.meta--feat,
+.meta.meta--feat-sub{
+  text-align: center;
+  margin: 10px 0 6px;
+  font-family: "Oranienbaum","Ruslan Display",serif;
+  color: #2f2114;
+  letter-spacing: .3px;
+  font-weight: 400;
+}
+/* Умения: подписи между сетками — по центру и как в «Расах» */
+.hs-frame__scroll .meta.meta--feat,
+.hs-frame__scroll .meta.meta--feat-sub {
+  display: block;
+  text-align: center;
+  margin: 10px 0 6px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .2px;
+  opacity: .9;
+}
+.hs-iconbar button,
+.hs-icon {
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+/* ==== HS Sheet Modal (единый «свиток» для всех модалок) ==== */
+.modal--sheet{
+  /* геометрия свитка */
+  --sheet-w: 720px;
+  --sheet-h: 1040px;
+
+  /* внутренние поля «окна» под текст */
+  --pad-top: 72px;
+  --pad-right: 22px;
+  --pad-bottom: 34px;
+  --pad-left: 22px;
+
+  width: min(var(--sheet-w), 96vw);
+  height: min(var(--sheet-h), 90vh);
+
+  /* ТВОЙ PNG-СВИТОК */
+  background-image: url("../assets/ui/scroll-hearthstone.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+
+  /* убираем прежнюю коробку модалки */
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* скролл будет у body */
+}
+
+/* раскладка внутри свитка */
+.modal--sheet .modal__header{
+  padding: var(--pad-top) var(--pad-right) 10px var(--pad-left);
+  margin: 0; border: 0;
+}
+.modal--sheet .modal__body{
+  padding: 4px var(--pad-right) 8px var(--pad-left);
+  margin: 0; border: 0;
+  overflow: auto;    /* ← скролл контента */
+  flex: 1 1 auto;
+}
+.modal--sheet .modal__footer{
+  padding: 10px var(--pad-right) var(--pad-bottom) var(--pad-left);
+  margin: 0; border: 0;
+}
+
+/* заголовок и кнопки на пергаменте */
+.modal--sheet .modal__title{
+  font-family: "Oranienbaum","Ruslan Display",serif;
+  font-size: 22px;
+  text-align: center;
+}
+.modal--sheet .btn{ background:#1d1812; }
+.modal--sheet .btn.btn-primary{ border-color: rgba(201,162,39,.55); }
+.modal--sheet .btn.btn-danger{  border-color: rgba(224,73,73,.55); }
+/* ===== NUCLEAR OVERRIDE: любая .modal = свиток Hearthstone ===== */
+.modal{
+  /* геометрия свитка */
+  width: min(720px, 96vw) !important;
+  height: min(1040px, 90vh) !important;
+
+  /* фон-свиток */
+  background-image: url("../assets/ui/scroll-hearthstone.png") !important;
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+  background-color: transparent !important;
+
+  /* убрать старую коробку */
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+
+  /* внутренняя раскладка */
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+/* «ручки» внутренних полей под текст */
+.modal{ --pad-top:72px; --pad-right:22px; --pad-bottom:34px; --pad-left:22px; }
+
+/* если у модалки есть стандартные секции */
+.modal .modal__header{
+  padding: var(--pad-top) var(--pad-right) 10px var(--pad-left) !important;
+  margin: 0 !important; border: 0 !important;
+}
+.modal .modal__body{
+  padding: 4px var(--pad-right) 8px var(--pad-left) !important;
+  margin: 0 !important; border: 0 !important;
+  overflow: auto !important;
+  flex: 1 1 auto !important;
+}
+.modal .modal__footer{
+  padding: 10px var(--pad-right) var(--pad-bottom) var(--pad-left) !important;
+  margin: 0 !important; border: 0 !important;
+}
+
+/* если секции НЕ размечены (legacy модалки) — делаем паддинги и скролл по содержимому */
+.modal:not(:has(.modal__body)){
+  display: block !important;
+  overflow: auto !important;
+}
+.modal:not(:has(.modal__body)) > *{
+  padding: var(--pad-top) var(--pad-right) var(--pad-bottom) var(--pad-left) !important;
+}
+
+/* аккуратнее заголовок/кнопки на пергаменте */
+.modal .modal__title{
+  font-family:"Oranienbaum","Ruslan Display",serif !important;
+  font-size:22px !important;
+  text-align:center !important;
+}
+.modal .btn{ background:#1d1812 !important; }
+/* === RACE-STYLE: тёмный читаемый текст на свитке + шире свиток === */
+
+/* ширина/высота свитка (ещё шире) */
+.modal,
+.spell-modal,
+.modal.modal--sheet{
+  width: min(1040px, 98vw) !important;
+  height: min(98vh, 1200px) !important;
+}
+
+/* поля окна свитка */
+.modal .modal__header,
+.spell-modal .modal__header { padding: 84px 42px 12px 42px !important; }
+.modal .modal__body,
+.spell-modal .modal__body   { padding: 8px 42px 16px 42px !important; }
+.modal .modal__footer,
+.spell-modal .modal__footer { padding: 12px 42px 48px 42px !important; }
+
+
+/* ГЛАВНОЕ: как в разделе «Расы» — тёмный текст, без подсветок */
+.modal .modal__body,
+.spell-modal .modal__body{
+  color: #2b1e12 !important;                 /* тёмно-коричневый */
+  text-shadow: none !important;              /* без свечения */
+  font-family: "Inter Var", Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial !important;
+  font-size: 16.5px !important;
+  line-height: 1.62 !important;
+  letter-spacing: .1px !important;
+}
+
+/* заголовки внутри — как в «Расах» */
+.modal .modal__body h2,
+.modal .modal__body h3,
+.spell-modal .modal__body h2,
+.spell-modal .modal__body h3{
+  font-family: "Oranienbaum","Ruslan Display",serif !important;
+  color: #1a1209 !important;
+  margin: 10px 0 6px !important;
+  text-transform: none !important;
+}
+
+/* параграфы/списки */
+.modal .modal__body p,
+.spell-modal .modal__body p{ margin: 10px 0 !important; }
+.modal .modal__body ul,
+.modal .modal__body ol,
+.spell-modal .modal__body ul,
+.spell-modal .modal__body ol{ margin: 10px 0 10px 26px !important; }
+
+/* акценты — тёмные, а не «золотые» */
+.modal .modal__body b,
+.modal .modal__body strong,
+.spell-modal .modal__body b,
+.spell-modal .modal__body strong{
+  color: #25180d !important;
+  font-weight: 700 !important;
+}
+
+/* таблицы — чёткие линии, как в «Расах» */
+.modal .modal__body table,
+.spell-modal .modal__body table{
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 10px 0 !important;
+  font-size: 15px !important;
+}
+.modal .modal__body th,
+.modal .modal__body td,
+.spell-modal .modal__body th,
+.spell-modal .modal__body td{
+  border-bottom: 1px solid rgba(43,30,18,.28) !important; /* коричневые линии */
+  padding: 8px 10px !important;
+  text-align: left !important;
+}
+/* === SPELL MODAL: читабельные мета-поля, заголовок наверх, кнопки под стиль === */
+
+/* 1) Свиток шире/выше (точно) */
+.modal,
+.spell-modal,
+.modal.modal--sheet{
+  width: min(1100px, 98vw) !important;   /* шире */
+  height: min(98vh, 1220px) !important;  /* выше */
+}
+
+/* 2) Заголовок — прямо у верхнего завитка */
+.modal .modal__header,
+.spell-modal .modal__header{
+  padding: 50px 55px 40px 42px !important;  /* было ~84 — опустили */
+}
+.modal .modal__title,
+.spell-modal .modal__title{
+  color: #1a1209 !important;                /* как в “Расах” */
+  font-family: "Oranienbaum","Ruslan Display",serif !important;
+  font-size: 24px !important;
+  line-height: 1.1 !important;
+  text-align: center !important;
+  transform: translateY(-2px) translateX(40px);              /* слегка ещё выше на завиток */
+}
+
+/* 3) Мета-поля (Школа, Время…, Дистанция и т.д.) — контрастные и различимые */
+.modal .modal__body .meta,
+.spell-modal .modal__body .meta{
+  color: #2b1e12 !important;               /* тёмный текст */
+  font-size: 16px !important;
+  line-height: 1.55 !important;
+  margin: 6px 0 !important;
+}
+.modal .modal__body .meta b,
+.spell-modal .modal__body .meta b{
+  color: #1a1209 !important;               /* ярче метки */
+  font-weight: 700 !important;
+  margin-right: 4px;
+}
+.modal .modal__body .meta a,
+.spell-modal .modal__body .meta a{
+  color: #1f3a7a !important;               /* отличимый цвет для ссылок */
+  text-decoration: underline !important;
+  font-weight: 600 !important;
+  font-style: italic;                       /* лёгкий “курсив”, как просил */
+}
+
+/* 4) Основной текст внутри (как в “Расах”) */
+.modal .modal__body,
+.spell-modal .modal__body{
+  color: #2b1e12 !important;
+  text-shadow: none !important;
+  font-family: "Inter Var", Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial !important;
+  font-size: 16.5px !important;
+  line-height: 1.62 !important;
+  letter-spacing: .1px !important;
+}
+
+/* 5) Кнопка закрытия (крестик) — аккуратно под стиль */
+.modal .icon-btn,
+.spell-modal .icon-btn{
+  background: rgba(0,0,0,.12) !important;
+  border: 1px solid rgba(43,30,18,.35) !important;
+  color: #1a1209 !important;
+  border-radius: 10px !important;
+  padding: 6px 10px !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,.12) !important;
+}
+
+/* 6) Кнопки внизу — “пергаментный” стиль, читаемые */
+.modal .modal__footer .btn,
+.spell-modal .modal__footer .btn{
+  background: #3b2a1b !important;
+  border: 1px solid rgba(139,106,42,.65) !important;
+  color: #f3e8c0 !important;
+  border-radius: 12px !important;
+  padding: 10px 14px !important;
+  font-weight: 600 !important;
+}
+.modal .modal__footer .btn.btn-primary{ border-color: #c9a227 !important; }
+.modal .modal__footer .btn.btn-danger{  border-color: #b44a3f !important; }
+
+/* 7) Чуть больше “воздуха” снизу, чтобы кнопки не липли к завитку */
+.modal .modal__footer,
+.spell-modal .modal__footer{
+  padding-bottom: 52px !important;
+}
+/* === SCOPE FIX: свиток только там, где нужно === */
+/* 1) "Свитковые" модалки: .modal:not(.modal--plain) */
+.modal:not(.modal--plain){
+  width: min(1100px, 98vw) !important;
+  height: min(98vh, 1220px) !important;
+  background-image: url("../assets/ui/scroll-hearthstone.png") !important;
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+  background-color: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+/* внутренние поля «окна» для свитка (правишь эти 4 значения) */
+.modal:not(.modal--plain){ --pad-top: 72px; --pad-right: 42px; --pad-bottom: 28px; --pad-left: 42px; }
+.modal:not(.modal--plain) .modal__header{ padding: var(--pad-top) var(--pad-right) 10px var(--pad-left) !important; }
+.modal:not(.modal--plain) .modal__body  { padding: 8px var(--pad-right) 16px var(--pad-left) !important; }
+.modal:not(.modal--plain) .modal__footer{ padding: 12px var(--pad-right) var(--pad-bottom) var(--pad-left) !important; }
+
+/* 2) ПЛОСКИЕ модалки (без свитка): назначаем класс .modal--plain */
+.modal.modal--plain{
+  background: #1b1611 !important;        /* спокойная тёмная подложка */
+  border: 1px solid rgba(0,0,0,.35) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,.5) !important;
+  width: min(980px, 96vw) !important;
+  max-height: 90vh !important;
+  display: flex !important; flex-direction: column !important;
+  overflow: hidden !important;
+}
+.modal.modal--plain .modal__header{ padding: 16px 18px !important; }
+.modal.modal--plain .modal__body  { padding: 12px 18px !important; overflow: auto !important; }
+.modal.modal--plain .modal__footer{ padding: 12px 18px 16px !important; }
+
+/* кнопки и заголовок в "plain" */
+.modal.modal--plain .modal__title{ color:#f0e6d2 !important; font-family:"Inter Var",Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial; font-size:20px !important; }
+.modal.modal--plain .btn{ background:#2b2219 !important; color:#f0e6d2 !important; border:1px solid rgba(201,162,39,.45) !important; border-radius:10px !important; padding:8px 12px !important; }
+.modal.modal--plain .icon-btn{ background:transparent !important; color:#f0e6d2 !important; border:1px solid rgba(255,255,255,.15) !important; border-radius:10px !important; padding:6px 10px !important; }
+/* === свиток только для НЕ plain-модалок === */
+.modal:not(.modal--plain){
+  width: min(1100px, 98vw) !important;
+  height: min(98vh, 1220px) !important;
+  background-image: url("../assets/ui/scroll-hearthstone.png") !important;
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+  background-color: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+
+  /* рамка области текста — редактируешь эти 4 значения */
+  --pad-top: 72px;      /* ↑ заголовок/верх */
+  --pad-right: 42px;
+  --pad-bottom: 28px;   /* ↓ НИЖНЯЯ граница видимой текстовой области */
+  --pad-left: 42px;
+}
+.modal:not(.modal--plain) .modal__header{ padding: var(--pad-top) var(--pad-right) 10px var(--pad-left) !important; }
+.modal:not(.modal--plain) .modal__body  { padding: 8px var(--pad-right) 16px var(--pad-left) !important; }
+.modal:not(.modal--plain) .modal__footer{ padding: 12px var(--pad-right) var(--pad-bottom) var(--pad-left) !important; }
+
+/* плоские модалки (таблица, мультикласс) */
+.modal.modal--plain{
+  background: #1b1611 !important;
+  border: 1px solid rgba(0,0,0,.35) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,.5) !important;
+  width: min(980px, 96vw) !important;
+  max-height: 90vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+.modal.modal--plain .modal__header{ padding: 16px 18px !important; }
+.modal.modal--plain .modal__body  { padding: 12px 18px !important; overflow: auto !important; }
+.modal.modal--plain .modal__footer{ padding: 12px 18px 16px !important; }
+/* ===== Таблица персонажа (модалка) ===== */
+.modal.table-modal {
+  color: #f5e8c8; /* мягкий светлый текст на тёмном фоне */
+}
+
+.modal.table-modal table {
+  color: #f5e8c8;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.modal.table-modal th {
+  color: #fff4c0; /* чуть ярче заголовки */
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.modal.table-modal td {
+  color: #f3e5b3;
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* подсветка при наведении */
+.modal.table-modal tr:hover td {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+/* === Character Table Modal — светлый текст только здесь === */
+.modal.modal--plain.table-modal .modal__title { 
+  color: #f5e8c8 !important;
+}
+.modal.modal--plain.table-modal .modal__body { 
+  color: #f5e8c8 !important; 
+  text-shadow: none !important;
+}
+.modal.modal--plain.table-modal .modal__body a { 
+  color: #ffe089 !important; 
+}
+
+/* Табличные элементы */
+.modal.modal--plain.table-modal thead th {
+  color: #fff2b3 !important;
+  background: rgba(255,255,255,.06) !important;
+}
+.modal.modal--plain.table-modal tbody td {
+  color: #f5e8c8 !important;
+  background: rgba(255,255,255,.02) !important;
+}
+.modal.modal--plain.table-modal tr:hover td {
+  background: rgba(255,255,255,.08) !important;
+}
+/* === Принудительно светлый текст только в таблице персонажа === */
+.table-modal,
+.table-modal * {
+  color: #f9e8b8 !important;
+  text-shadow: none !important;
+  -webkit-text-fill-color: #f9e8b8 !important;
+  filter: none !important;
+}
+
+/* Ячейки таблицы */
+.table-modal table {
+  border-collapse: collapse !important;
+}
+
+.table-modal th {
+  color: #fff5c2 !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.table-modal td {
+  color: #f9e8b8 !important;
+  background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+.table-modal tr:hover td {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ссылки, если есть */
+.table-modal a {
+  color: #ffe7a0 !important;
+}
+
+/* сброс возможного invert/brightness фильтра */
+.table-modal .modal__body {
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}

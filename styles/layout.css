@@ -1,0 +1,364 @@
+/* ====== GRID: CHARACTERS ====== */
+.chars-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+/* ====== CARD: CHARACTER (арт справа ~42%) ====== */
+.char-card{
+  position: relative;
+  overflow: hidden;
+  min-height: 160px;
+  padding: 14px 42% 14px 14px; /* место под арт справа */
+}
+/* OVERRIDE: пергаментная карта без правого зазора под арт */
+.char-card.parchment-card{ padding:14px !important; }
+@media (max-width:460px){
+  .char-card.parchment-card{ padding:14px !important; }
+}
+/* на всякий случай выключим старый правый арт, если встретится */
+.char-card.parchment-card .char-art{ display:none !important; }
+
+/* правая подложка фиксированной ширины, без повторов, без сильного зума */
+/* правая артовая полоса в карточке (список) */
+.char-card .char-art{
+  position:absolute;
+  top:0; right:0; bottom:0;
+  width:44%;                     /* ~42–45% ширины */
+  background-position:right center;
+  background-size:auto 100%;     /* высота = 100%, правый край прижат */
+  background-repeat:no-repeat;
+  z-index:0;
+
+  /* маска PNG (белое = видно, прозрачное = скрыто) */
+  -webkit-mask-image:url('../assets/ui/masks/diag-right-soft.png');
+          mask-image:url('../assets/ui/masks/diag-right-soft.png');
+  -webkit-mask-size:100% 100%;
+          mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat;
+          mask-repeat:no-repeat;
+}
+
+.char-card .char-art::after{
+  content:"";
+  position:absolute; inset:0;
+  /* было: ...55% / 80% — светло и узко */
+  background: linear-gradient(90deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.55) 78%);
+}
+.char-card__content{ position: relative; z-index: 2; }
+.char-card__title{
+  font-family: "Ruslan Display","Oranienbaum",serif;
+  font-size: 20px; line-height: 1.1; margin-bottom: 6px;
+  text-shadow: 0 2px 0 rgba(0,0,0,.45);
+}
+.char-card__meta{ color: var(--text-muted); font-size: 13px; }
+
+/* адаптив: на узких — больше места под арт */
+@media (max-width: 460px){
+  .char-card{ padding-right: 46%; min-height: 140px; }
+}
+
+/* ====== CARD: PLUS (создать) ====== */
+.plus-card{
+  min-height: 160px;
+  display: grid; place-items: center;
+  text-align: center;
+  padding: 18px;
+  border: 1px dashed rgba(201,162,39,.35);
+  background: #1d1812;
+  cursor: pointer;
+  transition: transform .06s ease, background .2s ease, border-color .2s ease;
+}
+.plus-card:hover{ background: #231d15; border-color: rgba(201,162,39,.6); }
+.plus-card:disabled{ opacity: .6; cursor: not-allowed; }
+.plus-card .icon{ width: 28px; height: 28px; margin-bottom: 8px; }
+.plus-card__text{ color: var(--text-muted); font-size: 13px; }
+/* ====== HERO в шапке персонажа (арт справа ~52%) ====== */
+/* контейнер шапки персонажа */
+.char-hero{
+  position:relative;
+  overflow:hidden;
+  padding:14px;                   /* внутренние отступы */
+  padding-right:56% !important;   /* место под арт справа (~55–56%) */
+  margin-bottom:12px;
+}
+/* правая артовая полоса в шапке персонажа */
+.char-hero .hero-art{
+  position:absolute;
+  top:0; right:0; bottom:0;
+  width:56%;
+  background-position:right center;
+  background-size:auto 100%;
+  background-repeat:no-repeat;
+  z-index:0;
+
+  /* маска PNG шире для шапки */
+  -webkit-mask-image:url('../assets/ui/masks/diag-right-soft-wide.png');
+          mask-image:url('../assets/ui/masks/diag-right-soft-wide.png');
+  -webkit-mask-size:100% 100%;
+          mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat;
+          mask-repeat:no-repeat;
+}
+
+/* лёгкое затемнение справа, чтобы слева текст читался */
+.char-hero .hero-art::after{
+  content:"";
+  position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(90deg, rgba(0,0,0,0) 35%, rgba(0,0,0,.55) 78%);
+}
+
+.char-hero > *{ position:relative; z-index:2; }
+
+/* Нежная тонировка под цвет класса (переменная --accent задаётся из JS) */
+.char-card,
+.char-hero{
+  --accent: #c9a227; /* фолбэк */
+  border-color: color-mix(in srgb, var(--accent) 45%, #2a2319 55%);
+}
+
+/* лёгкая подсветка левой части, чтобы фон «подтягивался» к цвету класса */
+.char-card::before,
+.char-hero::before{
+  content:"";
+  position:absolute; inset:0;
+  z-index:1; pointer-events:none;
+  background: radial-gradient(120% 90% at 0% 0%,
+              color-mix(in srgb, var(--accent) 18%, transparent) 0%,
+              transparent 60%);
+  opacity:.9;
+}
+
+/* имя в списке карт: без золотой заливки */
+.char-card__title{
+  color:#e9e2d3;
+  text-shadow: 0 2px 0 rgba(0,0,0,.4);
+}
+
+/* имя и мета в шапке персонажа — спокойнее, мета крупнее */
+.char-hero h1{
+  color:#e9e2d3;
+  filter:none;
+  -webkit-text-stroke:0;
+  text-shadow: 0 2px 0 rgba(0,0,0,.4);
+}
+.char-hero .meta{
+  font-size: 16px;        /* было ~13–14px */
+  line-height: 1.35;
+}
+
+/* Чистый фон под класс — полностью перебиваем базовый градиент */
+.char-card.panel,
+.char-hero.panel{
+  background: var(--bg, #1b1610) !important;   /* именно background */
+  background-image: none !important;           /* на случай шортхендов */
+  border-color: color-mix(in srgb, var(--accent, #c9a227) 60%, var(--bg, #1b1610) 40%) !important;
+}
+
+/* если базовый .panel добавляет какие-то затемняющие оверлеи */
+.char-card.panel::after,
+.char-hero.panel::after{
+  content:none !important;
+  background:none !important;
+}
+/* кнопка удаления внизу слева */
+.char-card__delete{
+  position:absolute;
+  left:12px; bottom:12px;
+  right:auto; top:auto;
+  z-index:3;
+}
+
+/* ==== FORCE: hero art in the header ==== */
+/* вставить в самый низ файла */
+.char-hero{
+  padding-right: 56% !important;   /* место под правую полосу */
+}
+
+.char-hero .hero-art{
+  position: absolute !important;
+  top: 0; right: 0; bottom: 0; left: auto !important;
+
+  width: 56% !important;                  /* широкая полоса */
+  background-position: right center !important;
+  background-size: auto 250% !important;  /* меньше зум, правый край прижат */
+  background-repeat: no-repeat !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+
+  /* PNG-маска с диагональю (белое = видно) */
+  -webkit-mask-image: url('../assets/ui/masks/diag-right-soft-wide.png') !important;
+          mask-image: url('../assets/ui/masks/diag-right-soft-wide.png') !important;
+  -webkit-mask-size: 100% 100% !important;
+          mask-size: 100% 100% !important;
+  -webkit-mask-repeat: no-repeat !important;
+          mask-repeat: no-repeat !important;
+}
+
+/* мягкое затемнение справа, чтобы слева текст читаем */
+.char-hero .hero-art::after{
+  content: "";
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, rgba(0,0,0,0) 38%, rgba(0,0,0,.6) 80%);
+}
+
+/* --- overrides: белые заголовки --- */
+.page-title{
+  color:#fff !important;
+  text-shadow:none !important;
+}
+.modal__title{
+  color:#fff !important;
+}
+/* --- TableModal: аккуратная компактная сетка --- */
+.spell-table-box{
+  border:1px solid rgba(255, 215, 0, .20);
+  border-radius:12px;
+  overflow:hidden;            /* скругление по углам для сетки */
+  background:rgba(255,255,255,.02);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+  width: max-content;         /* ширина = по содержимому */
+  max-width: 100%;
+}
+
+.spell-table{
+  border-collapse: separate;
+  border-spacing: 0;
+  width: max-content;         /* не тянем на всю ширину */
+  font-variant-numeric: tabular-nums;
+}
+
+/* фиксируем всю «шапку», а не каждую th — так работает стабильнее */
+.spell-table thead{
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: rgba(0,0,0,.35);
+  border-bottom: 1px solid rgba(255, 215, 0, .18);
+}
+.spell-table thead th{
+  position: static;            /* убираем sticky на th */
+  padding: 8px 10px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+
+/* ячейки */
+.spell-table td,
+.spell-table th{
+  padding: 8px 10px;
+  vertical-align: middle;
+  border-right: 1px solid rgba(255, 215, 0, .12);
+}
+.spell-table td:last-child,
+.spell-table th:last-child{
+  border-right: none;
+}
+
+/* линии по строкам */
+.spell-table tbody tr{
+  border-bottom: 1px solid rgba(255, 215, 0, .10);
+}
+.spell-table tbody tr:last-child{
+  border-bottom: none;
+}
+
+/* зебра для читаемости */
+.spell-table tbody tr:nth-child(even){
+  background: rgba(255,255,255,.03);
+}
+
+/* выделение текущего уровня */
+.spell-table tbody tr.is-current{
+  background: rgba(255, 215, 0, .07);
+}
+
+/* выравнивание: первый столбец (уровень) и второй (бонус) по центру, остальные тоже
+   — смотрится аккуратно на компактной таблице */
+.spell-table td,
+.spell-table th{
+  text-align: center;
+}
+.spell-table td:first-child,
+.spell-table th:first-child{
+  text-align: center;
+}
+
+/* на узких экранах немного ужмём отступы */
+@media (max-width: 480px){
+  .spell-table td, .spell-table th{ padding: 6px 8px; }
+}
+/* === FIX: убираем старую артовую подложку у карточек === */
+.char-card .char-art,
+.char-card .char-art::after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  box-shadow: none !important;
+}
+/* === Character Select: пергамент как в шапке + убрать старую подложку/рамки === */
+
+/* ставим тот же пергамент, что в шапке персонажа */
+.chars-grid .char-card.panel.parchment-card{
+  /* подставь правильный файл, который у тебя реально есть в /assets/ui/ */
+  --card-paper: url("../assets/ui/parchment.png");
+
+  background: none !important;
+  background-image: var(--card-paper) !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: 100% auto !important;
+
+
+  border: none !important;
+  box-shadow: none !important;
+  overflow: hidden;
+  border-radius: 16px;
+  padding: 14px 16px; /* твои отступы */
+}
+
+/* ВЫРУБАЕМ световое пятно/подложку у старых карт */
+.chars-grid .char-card.parchment-card::before,
+.chars-grid .char-card.parchment-card::after{
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* Контент поверх пергамента */
+.chars-grid .char-card.parchment-card .char-card__content{
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+/* Орнамент под текстом (как в шапке) */
+.chars-grid .char-card.parchment-card .char-card__ornament{
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 42%;
+  opacity: .28;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Цвета текста как в шапке персонажа */
+.chars-grid .char-card.parchment-card .char-card__title{
+  font-family: "Oranienbaum","Ruslan Display",serif;
+  font-size: 20px;
+  margin-bottom: 6px;
+  color: #2f2114;
+  text-shadow: 0 1px 0 rgba(255,255,255,.25);
+}
+.chars-grid .char-card.parchment-card .char-card__meta{
+  color: #4a3523;
+  font-size: 13px;
+}

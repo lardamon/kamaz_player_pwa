@@ -1,0 +1,16 @@
+{
+  "name": "Player Kit — D&D 5e",
+  "short_name": "Player Kit",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0e1a2b",
+  "theme_color": "#0e1a2b",
+  "icons": [
+    {
+      "src": "assets/icons/app-icon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

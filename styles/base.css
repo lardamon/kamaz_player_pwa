@@ -1,0 +1,224 @@
+/* ====== FONTS (offline) ====== */
+@font-face{
+  font-family: "Inter Var";
+  src: url("../assets/fonts/Inter/InterVariable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face{
+  font-family: "Ruslan Display";
+  src:
+    url("../assets/fonts/RuslanDisplay/RuslanDisplay-Regular.woff2") format("woff2"),
+    url("../assets/fonts/RuslanDisplay/RuslanDisplay.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face{
+  font-family: "Oranienbaum";
+  src:
+    url("../assets/fonts/Oranienbaum/Oranienbaum-Regular.woff2") format("woff2"),
+    url("../assets/fonts/Oranienbaum/Oranienbaum.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+/* Rubik SemiBold (кириллица) */
+@font-face{
+  font-family: "Rubik";
+  src: url("../assets/fonts/Rubik/rubik-semibold.woff2") format("woff2"),
+       url("../assets/fonts/Rubik/rubik-semibold.woff") format("woff");
+  font-style: normal;
+  font-weight: 600;     /* Semibold */
+  font-display: swap;
+}
+
+
+/* ====== THEME ====== */
+:root{
+  --bg-1: #0f0c09;
+  --bg-2: #15110d;
+
+  --panel: #241e16;
+  --panel-border: rgba(255,255,255,.09);
+  --panel-shadow: 0 10px 40px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.03);
+
+  --text: #f3ecd7;
+  --text-muted: #cdbf9f;
+
+  --gold: #c9a227;
+  --gold-2: #e3c15a;
+  --ok: #2fa66a;
+  --danger: #e04949;
+
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 10px;
+
+  --space-1: 6px;
+  --space-2: 10px;
+  --space-3: 14px;
+  --space-4: 18px;
+  --space-5: 24px;
+}
+
+/* ====== RESET/UTILITY ====== */
+*{ box-sizing: border-box; }
+html, body { height: 100%; }
+img{ border:0; display:inline-block; }
+button{ font-family: inherit; }
+a{ color: inherit; }
+
+body{
+  margin: 0;
+  color: var(--text);
+  background:
+    radial-gradient(1200px 800px at 80% -10%, rgba(14,26,43,.35), transparent 60%),
+    radial-gradient(900px 600px at 10% 120%, rgba(201,162,39,.07), transparent 50%),
+    linear-gradient(180deg, var(--bg-2), var(--bg-1));
+  font-family: "Inter Var", Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", Arial;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,h2,h3{
+  margin: 0 0 var(--space-3);
+  letter-spacing: .2px;
+}
+h1{
+  font-family: "Ruslan Display","Oranienbaum",serif;
+  font-size: 32px;
+  /* золото + эмбосс */
+  background: linear-gradient(180deg, #fff1c2 0%, #f0d27a 35%, #b98a22 70%, #614810 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  text-shadow:
+    0 2px 0 rgba(0,0,0,.55),
+    0 10px 30px rgba(0,0,0,.45);
+}
+h2{ font-family: "Oranienbaum","Ruslan Display",serif; font-size: 22px; }
+h3{ font-family: "Oranienbaum","Ruslan Display",serif; font-size: 18px; }
+
+.app-root{
+  max-width: 960px;
+  margin: 0 auto;
+  padding: clamp(12px, 3vw, 24px);
+}
+
+/* ====== PANELS / CARDS ====== */
+.panel{
+  background: linear-gradient(180deg, #2a241a 0%, #201a12 100%);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--panel-shadow);
+}
+
+/* ====== BUTTONS ====== */
+.btn{
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: #1d1812;
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .06s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+  user-select: none;
+}
+.btn:active{ transform: translateY(1px) scale(.99); }
+.btn-primary{
+  background: linear-gradient(180deg, #3a311f, #2a2317);
+  border-color: rgba(201,162,39,.45);
+  color: var(--gold-2);
+  box-shadow: 0 4px 12px rgba(201,162,39,.12), inset 0 1px 0 rgba(255,255,255,.05);
+}
+.btn-primary:hover{ background: linear-gradient(180deg, #42361f, #2f2717); }
+.btn-danger{ background: #2a1515; border-color: rgba(224,73,73,.35); color: #ffb6b6; }
+.btn-ghost{ background: transparent; border-color: rgba(255,255,255,.08); }
+.btn .icon{ width: 18px; height: 18px; display: inline-block; }
+
+/* ====== EMPTY ====== */
+.empty{ padding: var(--space-5); text-align: center; }
+.empty__img{
+  width: min(600px, 90%); max-width: 600px; height: auto;
+  border-radius: var(--radius-lg);
+  display: block; margin: 0 auto var(--space-4);
+  box-shadow: 0 12px 40px rgba(0,0,0,.35);
+}
+.empty__title{ font-family: "Oranienbaum","Ruslan Display",serif; font-size: 20px; margin-bottom: var(--space-3); }
+.empty__text{ color: var(--text-muted); margin-bottom: var(--space-4); font-size: 14px; }
+
+/* Utils */
+.stack{ display: grid; gap: var(--space-3); }
+.center{ display: grid; place-items: center; }
+/* === FEATURE GRID (кнопки-умения) === */
+.feature-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px,1fr));
+  gap: 8px;
+}
+@media (min-width: 420px){
+  .feature-grid{ grid-template-columns: repeat(auto-fill, minmax(170px,1fr)); }
+}
+
+.feature-chip{
+  /* .btn уже даёт основу; донастраиваем вид под «чип» */
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #1d1812;
+  border-color: rgba(255,255,255,.08);
+}
+.feature-chip:hover{
+  background: #231c14;
+  border-color: rgba(201,162,39,.35);
+}
+.feature-chip .lvl{
+  font-size: 12px;
+  line-height: 1;
+  padding: 4px 6px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.1);
+  color: var(--text-muted);
+}
+/* сама модалка ограничена по высоте */
+.feature-text {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* таблицы внутри умений */
+.feature-text table.inner-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 14px;
+}
+
+.feature-text table.inner-table td,
+.feature-text table.inner-table th {
+  border: 1px solid rgba(255,255,255,.2);
+  padding: 6px 8px;
+  vertical-align: top;
+}
+
+.feature-text table.inner-table tr:nth-child(even) {
+  background: rgba(255,255,255,.05);
+}
+/* Контент описаний умений (чтобы был один скролл) */
+.feature-text {
+  max-height: 65vh;   /* внутри скроллим текст */
+  overflow-y: auto;
+}
+
+.feature-text table.inner-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+
+.feature-text table.inner-table td,
+.feature-text table.inner-table th {
+  border: 1px solid rgba(255,255,255,.2);
+  padding: 4px 8px;
+}

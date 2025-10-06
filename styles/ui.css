@@ -1,0 +1,166 @@
+/* ====== FORMS ====== */
+.input, .select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: #1b1610;
+  color: var(--text);
+  font: inherit;
+  outline: none;
+  transition: border-color .2s ease, background .2s ease;
+}
+.input::placeholder { color: #a89879; }
+.input:focus, .select:focus { border-color: rgba(201,162,39,.45); background: #201a12; }
+
+.label { font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
+
+/* ====== MODAL ====== */
+.modal-backdrop{
+  position: fixed; inset: 0;
+  background: radial-gradient(600px 400px at 60% 10%, rgba(14,26,43,.25), transparent 60%), rgba(0,0,0,.55);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+  animation: fadeIn .15s ease;
+  padding: 16px;
+}
+@keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+
+.modal{
+  width: min(560px, 100%);
+  background: linear-gradient(180deg, #2a241a, #201a12);
+  border-radius: 16px;
+  border: 1px solid rgba(201,162,39,.35);
+  box-shadow: 0 24px 60px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.04);
+  padding: 16px;
+}
+
+.modal__header{
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.modal__title{
+  font-family: "Oranienbaum","Ruslan Display",serif;
+  font-size: 20px;
+}
+.icon-btn{
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: #1b1610;
+  cursor: pointer;
+}
+.icon-btn img{ width: 18px; height: 18px; }
+
+.modal__body{ display: grid; gap: 12px; margin-top: 6px; }
+.form-row{ display: grid; gap: 6px; }
+
+.modal__footer{
+  margin-top: 14px;
+  display: flex; gap: 10px; justify-content: flex-end;
+}
+
+/* ====== BADGE / META ====== */
+.meta{ display: inline-flex; gap: 8px; align-items: center; color: var(--text-muted); font-size: 13px; }
+.meta .dot{ width: 6px; height: 6px; border-radius: 50%; background: rgba(201,162,39,.7); }
+/* ====== CLASS BADGE ====== */
+.class-badge{
+  border: 1px solid rgba(201,162,39,.4);
+  background: #1b1610;
+  box-shadow: 0 2px 8px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.class-badge img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,.5));
+}
+/* class table in modal — компактная версия */
+.class-table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 620px;           /* уже */
+  font-size: 13px;            /* мельче */
+  table-layout: fixed;        /* фикс ширины колонок */
+}
+
+.class-table.compact th,
+.class-table.compact td {
+  padding: 6px 6px;           /* меньше отступы */
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.class-table.compact th:nth-child(1),
+.class-table.compact td:nth-child(1) {  /* "Ур." */
+  width: 46px;
+  text-align: left;
+}
+
+.class-table.compact th:nth-child(2),
+.class-table.compact td:nth-child(2) {  /* "Бонус" */
+  width: 62px;
+}
+
+.class-table.compact th,
+.class-table.compact td {
+  width: 38px;                /* остальные узкие числовые */
+}
+/* ====== RACE TRAITS TABLE ====== */
+.race-table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+  font-size: 14px;
+  margin-top: 6px;
+}
+.race-table th, .race-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  text-align: left;
+  vertical-align: top;
+  word-wrap: break-word;
+}
+.race-table th {
+  font-weight: 700;
+  background: rgba(255,255,255,0.04);
+}
+.race-table tr:last-child td {
+  border-bottom: 0;
+}
+
+/* мини-адаптация под узкие экраны */
+@media (max-width: 420px){
+  .race-table { font-size: 13px; }
+  .race-table th, .race-table td { padding: 6px 8px; }
+}
+
+.class-table tr.is-current { background: rgba(255, 215, 0, .08); }
+
+/* сама модалка таблицы — ограничение по высоте, меньше внутренние отступы */
+.class-table-modal .modal__header,
+.class-table-modal .modal__footer { padding-top: 8px; padding-bottom: 8px; }
+.class-table-modal .modal__title { font-size: 16px; }
+.class-table-modal .modal__body { padding-top: 8px; padding-bottom: 8px; }
+/* ===== RACE TRAITS BLOCK ===== */
+.race-trait {
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin: 6px 0;
+  line-height: 1.4;
+}
+.race-trait strong {
+  font-weight: 700;
+}
+.race-trait strong {
+  font-weight: 700;
+  color: #fff; /* можно убрать, если не нужен цвет */
+}
+
