@@ -793,11 +793,12 @@ body::before {
   margin: 0 !important; border: 0 !important;
 }
 .modal .modal__body{
-  padding: 4px var(--pad-right) 8px var(--pad-left) !important;
+  padding: 4px var(--pad-right) 36px var(--pad-left) !important; /* ↑ было 8px */
   margin: 0 !important; border: 0 !important;
   overflow: auto !important;
   flex: 1 1 auto !important;
 }
+
 .modal .modal__footer{
   padding: 10px var(--pad-right) var(--pad-bottom) var(--pad-left) !important;
   margin: 0 !important; border: 0 !important;
@@ -828,6 +829,57 @@ body::before {
   width: min(1040px, 98vw) !important;
   height: min(98vh, 1200px) !important;
 }
+/* === Multiclass (кнопка “Классы и уровни”) — компактный лист === */
+.multiclass-modal{
+  width: min(620px, 96vw) !important;
+  max-height: min(88vh, 760px) !important;
+  height: auto !important;
+  padding: 12px !important;
+}
+
+.multiclass-modal .modal__header{
+  padding: 16px 14px 8px 14px !important;
+}
+.multiclass-modal .modal__title{
+  font-family: "Oranienbaum","Ruslan Display",serif !important;
+  font-size: 20px !important;
+  line-height: 1.2 !important;
+  text-align: center !important;
+  transform: none !important;
+  color: #1a1209 !important;
+}
+
+.multiclass-modal .modal__body{
+  padding: 0 14px 12px 14px !important;
+}
+.multiclass-modal .meta{
+  color: #2b1e12 !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  margin-bottom: 8px !important;
+}
+
+/* компактные элементы управления */
+.multiclass-modal .btn{
+  height: 32px !important;
+  padding: 4px 10px !important;
+  font-size: 14px !important;
+}
+.multiclass-modal .select{
+  height: 32px !important;
+  font-size: 14px !important;
+  padding: 4px 6px !important;
+}
+.multiclass-modal .icon-btn{
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 30px !important;
+  padding: 0 !important;
+}
+.multiclass-modal .modal__footer{
+  padding: 8px 14px 6px 14px !important;
+}
+
 
 /* поля окна свитка */
 .modal .modal__header,
@@ -999,7 +1051,7 @@ body::before {
 }
 
 /* внутренние поля «окна» для свитка (правишь эти 4 значения) */
-.modal:not(.modal--plain){ --pad-top: 72px; --pad-right: 42px; --pad-bottom: 28px; --pad-left: 42px; }
+.modal:not(.modal--plain){ --pad-top: 72px; --pad-right: 42px; --pad-bottom: 56px; --pad-left: 42px; }
 .modal:not(.modal--plain) .modal__header{ padding: var(--pad-top) var(--pad-right) 10px var(--pad-left) !important; }
 .modal:not(.modal--plain) .modal__body  { padding: 8px var(--pad-right) 16px var(--pad-left) !important; }
 .modal:not(.modal--plain) .modal__footer{ padding: 12px var(--pad-right) var(--pad-bottom) var(--pad-left) !important; }
@@ -1016,7 +1068,8 @@ body::before {
   overflow: hidden !important;
 }
 .modal.modal--plain .modal__header{ padding: 16px 18px !important; }
-.modal.modal--plain .modal__body  { padding: 12px 18px !important; overflow: auto !important; }
+.modal.modal--plain .modal__body  { padding: 12px 18px 32px !important; overflow: auto !important; }
+
 .modal.modal--plain .modal__footer{ padding: 12px 18px 16px !important; }
 
 /* кнопки и заголовок в "plain" */
@@ -1149,4 +1202,94 @@ body::before {
 .table-modal .modal__body {
   filter: none !important;
   mix-blend-mode: normal !important;
+}
+/* === Multiclass: компактный вариант === */
+.modal.modal--plain.multiclass-modal{
+  width: min(680px, 96vw) !important;   /* Уже и аккуратнее */
+  max-height: 86vh !important;
+}
+
+.modal.modal--plain.multiclass-modal .modal__header{
+  padding: 14px 16px !important;
+}
+
+.modal.modal--plain.multiclass-modal .modal__body{
+  padding: 10px 16px !important;
+}
+
+.modal.modal--plain.multiclass-modal .modal__footer{
+  padding: 10px 16px 14px !important;
+}
+/* === Multiclass: компактный вариант (только для кнопки "Классы и уровни") === */
+.modal.modal--plain.multiclass-modal{
+  width: min(680px, 95vw) !important;  /* уже и аккуратнее */
+  max-height: 86vh !important;
+  height: auto !important;
+}
+
+.modal.modal--plain.multiclass-modal .modal__header{
+  padding: 14px 16px !important;
+}
+.modal.modal--plain.multiclass-modal .modal__body{
+  padding: 10px 16px !important;
+}
+.modal.modal--plain.multiclass-modal .modal__footer{
+  padding: 10px 16px 14px !important;
+}
+
+/* читаемые цвета именно в этой модалке */
+.modal.modal--plain.multiclass-modal .modal__title{
+  color: #f3ecd7 !important;          /* заголовок светлый */
+}
+.modal.modal--plain.multiclass-modal .meta{
+  color: var(--text-muted) !important; /* строка "Варвар 12 • ..." */
+}
+
+/* чуть компактнее контролы внутри */
+.modal.modal--plain.multiclass-modal .btn{
+  height: 32px !important;
+  padding: 4px 10px !important;
+  font-size: 14px !important;
+}
+.modal.modal--plain.multiclass-modal .select{
+  height: 32px !important;
+  font-size: 14px !important;
+  padding: 4px 6px !important;
+}
+.modal.modal--plain.multiclass-modal .icon-btn{
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 30px !important;
+  padding: 0 !important;
+}
+/* === HARD PATCH v2: плавное исчезание текста сверху и снизу у всех свитков === */
+.modal--sheet .modal__body,
+.modal:not(.modal--plain) .modal__body {
+  overflow: auto !important;
+
+  /* плавная маска сверху и снизу */
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    rgba(0,0,0,0) 0px,            /* полностью прозрачный — верх исчезает */
+    rgba(0,0,0,1) 40px,           /* ← сколько пикселей сверху появляется текст */
+    rgba(0,0,0,1) calc(100% - 64px), /* ← нижняя граница видимости */
+    rgba(0,0,0,0) 100%            /* исчезает к низу */
+  ) !important;
+          mask-image: linear-gradient(
+    180deg,
+    rgba(0,0,0,0) 0px,
+    rgba(0,0,0,1) 40px,
+    rgba(0,0,0,1) calc(100% - 64px),
+    rgba(0,0,0,0) 100%
+  ) !important;
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+}
+:root{
+  --title-off-x: 30px;   /* X: влево(−)/вправо(+) */
+  --title-off-y: -9px;   /* Y: вверх(−)/вниз(+)     */
+}
+.modal .modal__title,
+.spell-modal .modal__title{
+  transform: translateY(calc(-2px + var(--title-off-y))) translateX(var(--title-off-x)) !important;
 }

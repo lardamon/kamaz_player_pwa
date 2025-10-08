@@ -941,12 +941,13 @@ html = html.replace(/<a\b[^>]*>([\s\S]*?)<\/a>/gi, '$1');
   t.className = 'feature-text';
   t.innerHTML = renderFeatureHtml(item && item.text);
 
-  wrap.appendChild(h);
+  
   wrap.appendChild(t);
 
   // Если есть глобальная модалка — используем её
   if (typeof window.showInModal === 'function') {
-    window.showInModal(wrap, 'Умение');
+    window.showInModal(wrap, displayTitle);
+
     return;
   }
 
@@ -967,7 +968,8 @@ html = html.replace(/<a\b[^>]*>([\s\S]*?)<\/a>/gi, '$1');
   head.className = 'modal__header';
   const ttl = document.createElement('div');
   ttl.className = 'modal__title';
-  ttl.textContent = 'Умение';
+  ttl.textContent = displayTitle;
+
   const closeBtn = document.createElement('button');
   closeBtn.type = 'button';
   closeBtn.className = 'icon-btn';
@@ -1065,6 +1067,43 @@ function renderFeaturesSection(ch){
 
   let totalShown = 0;
 
+// --- фильтрация «умений» для раздела (только UI, таблицу не трогаем) ---
+const BASE_ALLOWED_BY_CLASS = {
+  wizard: [
+    'Магическое восстановление',
+    'Магические традиции',
+    'Формулы заговоров',
+    'Мастерство заклинателя',
+    'Фирменное заклинание',
+  ],
+};
+const GLOBAL_HIDDEN_FEATURES = [
+  'Увеличение характеристик',
+  'Боевой стиль',
+  'Варианты боевых стилей',
+  'Использование заклинаний',
+  'Дополнительные заклинания',
+];
+const normalizeFeatName = (s) =>
+  String(s || '')
+    .replace(/\(.*?\)/g, '')
+    .replace(/\[.*?\]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+
+const isHiddenFeature = (name) => {
+  const base = normalizeFeatName(name);
+  return GLOBAL_HIDDEN_FEATURES.some(x => normalizeFeatName(x) === base);
+};
+
+const allowBase = (classId, name) => {
+  const list = BASE_ALLOWED_BY_CLASS[classId];
+  if (!list) return true;
+  const base = normalizeFeatName(name);
+  return list.some(n => normalizeFeatName(n) === base);
+};
+
   classes.forEach(c => {
     const classId = String(c.id).toLowerCase();
     const lvl     = Math.max(1, Math.min(20, Number(c.level||1)));
@@ -1099,7 +1138,10 @@ const skinUrl = `./assets/ui/${file}.png`;
 
 
     // ---- базовые умения (скин КЛАССА) ----
-    const baseShown = baseFeats.filter(name => !!details[name]);
+    const baseShown = baseFeats.filter(name =>
+  !!details[name] && allowBase(classId, name) && !isHiddenFeature(name)
+);
+
     if (baseShown.length){
       const gridBase = el('div', { class:'hs-feat-grid' });
       gridBase.setAttribute('data-ch-class', classId);
@@ -1261,9 +1303,10 @@ return frame;
 
 // Универсальный выбор подкласса: сначала пробуем CLASS_FEATURES.*.subclasses,
 // если их нет — берём из SUBCLASS_PROGRESSIONS[<classId>] (каркас под Волшебника).
-function pickSubclassForCharacter(ch){
-  const classId = ch.classId;
+function pickSubclassForCharacter(ch, targetClassId){
+  const classId = targetClassId || ch.classId;
   const CF = (window.CLASS_FEATURES && window.CLASS_FEATURES[classId]) || {};
+
 
   // 1) основной источник
   let subs = (CF.subclasses && { ...CF.subclasses }) || {};
@@ -1307,22 +1350,46 @@ function pickSubclassForCharacter(ch){
 
     btn.textContent = nice + (ch.subclassId === id ? ' ✓' : '');
     btn.addEventListener('click', ()=>{
-      // сохранить в персонажа
-      const list = load();
-      const idx = list.findIndex(x=>x.id===ch.id);
-      if (idx>=0){
-        list[idx].subclassId = id;
-        save(list);
-      }
-      // закрыть модалку (если есть общий закрыватель) или фолбэк-оверлей
-      if (typeof window.closeModal === 'function') {
-        window.closeModal();
-      } else if (overlay && overlay.parentNode) {
-        overlay.parentNode.removeChild(overlay);
-      }
-      // перерисовать экран
-      render(document.getElementById('app'), ch.id);
-    });
+  const list = load();
+  const i = list.findIndex(x=>x.id===ch.id);
+  if (i >= 0){
+    const cur = list[i];
+
+    // гарантируем наличие массива classes
+    if (!Array.isArray(cur.classes) || !cur.classes.length){
+      const baseId  = String(cur.classId || ch.classId || 'fighter').toLowerCase();
+      const baseLvl = Math.max(1, Number(cur.level || ch.level || 1));
+      cur.classes = [{ id: baseId, level: baseLvl, subclassId: cur.subclassId || null }];
+      cur.primary = 0;
+    }
+
+    // целевой класс = явно переданный (основной), иначе primary
+    const tId = String(
+      (targetClassId || cur.classId || (cur.classes[cur.primary] && cur.classes[cur.primary].id) || cur.classes[0].id)
+    ).toLowerCase();
+
+    const target = cur.classes.find(c => String(c.id).toLowerCase() === tId) || cur.classes[cur.primary] || cur.classes[0];
+    if (target) target.subclassId = id;
+
+    // зеркало для совместимости
+    if (String(cur.classId).toLowerCase() === tId){
+      cur.subclassId = id;
+    }
+
+    save(list);
+  }
+
+  // закрыть модалку (или фолбэк-оверлей)
+  if (typeof window.closeModal === 'function') {
+    window.closeModal();
+  } else if (overlay && overlay.parentNode) {
+    overlay.parentNode.removeChild(overlay);
+  }
+
+  // перерисовать экран
+  render(document.getElementById('app'), ch.id);
+});
+
     listWrap.appendChild(btn);
   });
 
